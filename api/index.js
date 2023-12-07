@@ -1,18 +1,24 @@
 const express = require("express");
 const app = express();
-app.use(express.json());
 require("dotenv").config();
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const User = require("./models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser');
+
+
+app.use(express.json());
+app.use(cookieParser())
+
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "secretkey";
 app.use(
   cors({
-    origin: "*",
+    origin: "http://127.0.0.1:5173",
+    credentials: true,
   })
 );
 
@@ -56,7 +62,7 @@ app.post("/login", async (req, res) => {
           {},
           function (err, token) {
             if (err) throw err;
-            res.cookie("token", token).json("password match");
+            res.cookie("token", token).json(userDoc);
           }
         );
       } else {
@@ -69,6 +75,13 @@ app.post("/login", async (req, res) => {
     res.status(500).json(error, "error from Login");
   }
 });
+
+app.get('/profile', (req, res) => {
+  // console.log(req.headers);
+  const {token} = req.cookies;
+  console.log(token);
+  res.json('hello')
+})
 
 app.listen(8000, () => {
   console.log("listening on post 8000");
