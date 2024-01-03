@@ -81,6 +81,7 @@ app.get("/profile", (req, res) => {
   // console.log(token);
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      // console.log(userData);
       if (err) throw err;
       // console.log(user);
       const { name, email, _id } = await User.findById(userData.id);
@@ -91,6 +92,10 @@ app.get("/profile", (req, res) => {
     res.json(null);
   }
 });
+
+app.post('/logout', (req, res) => {
+  res.cookie('token', '').json(true)
+})
 
 app.listen(8000, () => {
   console.log("listening on post 8000");
