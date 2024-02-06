@@ -47,3 +47,24 @@ The first ! (logical NOT) negates the truthiness of the value. If user is a fals
 The second ! negates again. So, if !!user started as a truthy value, it remains true. If !!user started as a falsy value, it becomes false.
 
 axios.defaults.withCredentials = true; //to enable cookies
+
+
+--to read cookies
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+
+--- <button className="bg-gray-200 px-4 rounded-2xl">Add&nbsp;Photos</button>
+
+in this example if we use Add Photos normally then it would break and get into the next Line or we can say Add & button comes one below the other
+
+but as we use Add&nbsp;Photos 
+there is no breaking between the words and it gets to line 
+(called as no breaking space): nbsp;
+
+---npm install image-downloader
+With the help of this library in react if we want to upload an image by any link, the link of that image gets stored in our upload directory in the backend.
+
+---console.log({__dirname});
+
+this way we will get the full path to the directory

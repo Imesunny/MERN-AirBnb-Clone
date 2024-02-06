@@ -7,9 +7,11 @@ const User = require("./models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const imageDownLoader = require("image-downloader");
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname+'/uploads'));
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "secretkey";
@@ -93,9 +95,21 @@ app.get("/profile", (req, res) => {
   }
 });
 
-app.post('/logout', (req, res) => {
-  res.cookie('token', '').json(true)
-})
+app.post("/logout", (req, res) => {
+  res.cookie("token", "").json(true);
+});
+
+console.log({ __dirname });
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  const newName = "photo" + Date.now() + ".jpg";
+  await imageDownLoader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+
+  res.json(newName);
+});
 
 app.listen(8000, () => {
   console.log("listening on post 8000");
